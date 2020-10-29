@@ -10,6 +10,8 @@ const getProducts = async(req, res = response) => {
     const [products, total] = await Promise.all([
 
         Product.find({}, 'name unitPrice description stock img category user')
+        .populate('user', 'name img')
+        //.populate('category','description')
         .skip(from)
         .limit(to),
 
@@ -39,10 +41,10 @@ const getProductId = async(req, res = response) => {
 
 const createProduct = async(req, res = response) => {
 
-    //const uid = req.user.uid;
+    const uid = req.uid;
     const { name } = req.body;
     const product = new Product({
-        //user: uid,
+        user: uid,
         ...req.body
     });
 
@@ -78,7 +80,7 @@ const createProduct = async(req, res = response) => {
 const updateProduct = async(req, res = response) => {
 
     const id = req.params.id;
-    //const uid = req.uid;
+    const uid = req.uid;
     try {
 
         const productDB = await Product.findById(id);
@@ -91,7 +93,7 @@ const updateProduct = async(req, res = response) => {
         }
 
         const changeProduct = {
-            //user: uid,
+            user: uid,
             ...req.body
         }
 
@@ -116,7 +118,8 @@ const updateProduct = async(req, res = response) => {
 const updateStockProduct = async(req, res = responsees) => {
 
     const id = req.params.id;
-    //const uid = req.uid;
+    const uid = req.uid;
+    const stock = req.body.stock;
 
     try {
 
@@ -130,14 +133,8 @@ const updateStockProduct = async(req, res = responsees) => {
         }
 
         const changeStockProduct = {
-            name,
-            unitPrice,
-            brand,
-            description,
-            img,
-            category,
-            //user: uid,
-            ...req.body.stock
+            user: uid,
+            stock: stock
         }
 
         const updateStockProductDB = await Product.findByIdAndUpdate(id, changeStockProduct, { new: true });
