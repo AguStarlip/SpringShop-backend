@@ -7,21 +7,24 @@ const getProducts = async(req, res = response) => {
     const from = Number(req.query.from) || 0;
     const to = Number(req.query.to) || 5;
 
-    const [products, total] = await Promise.all([
+    const [products, inStock, outStock] = await Promise.all([
 
-        Product.find({}, 'name unitPrice description stock img category user')
-        .populate('user', 'name img')
-        //.populate('category','description')
+        Product.find({ stock: true }, 'name unitPrice description stock img category user')
+        .populate('user', 'name email img')
+        .populate('category', 'description')
         .skip(from)
         .limit(to),
 
-        Product.countDocuments()
+        Product.countDocuments({ stock: true }),
+
+        Product.countDocuments({ stock: false })
     ]);
 
     res.json({
         ok: true,
         products,
-        product_records: total
+        products_instock: inStock,
+        products_outstock: outStock
     });
 
 }

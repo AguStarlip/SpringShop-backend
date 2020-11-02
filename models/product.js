@@ -29,7 +29,7 @@ const ProductSchema = Schema({
     category: {
         type: Schema.Types.ObjectId,
         ref: 'Category',
-        required: false
+        required: true
     },
     user: {
         type: Schema.Types.ObjectId,
