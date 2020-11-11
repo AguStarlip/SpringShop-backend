@@ -9,7 +9,7 @@ const getProducts = async(req, res = response) => {
 
     const [products, inStock, outStock] = await Promise.all([
 
-        Product.find({ stock: true }, 'name unitPrice description stock img category user')
+        Product.find({}, 'name unitPrice description stock img category user')
         .populate('user', 'name email img')
         .populate('category', 'description')
         .skip(from)
