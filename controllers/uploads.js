@@ -1,6 +1,9 @@
 const { response } = require('express');
 const { v4: uuidv4 } = require('uuid');
 const cloudinary = require('cloudinary').v2;
+const { imageUpdate } = require('../helpers/image-update');
+const fs = require('fs');
+const path = require('path');
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -57,9 +60,9 @@ const fileUpload = (req, res = response) => {
             });
         }
 
-        // imageUpload(type, id, fileName);
+        imageUpdate(type, id, fileName);
 
-        cloudinary.uploader.upload(path, { folder: cloudinary_path, public_id: fileName }, (error, result) => {
+        /* cloudinary.uploader.upload(path, { folder: cloudinary_path, public_id: fileName }, (error, result) => {
 
             if (error) {
                 console.log(error);
@@ -70,7 +73,7 @@ const fileUpload = (req, res = response) => {
             }
 
             console.log(result);
-        });
+        }); */
 
         res.json({
             ok: true,
@@ -81,12 +84,47 @@ const fileUpload = (req, res = response) => {
 
 }
 
-const imageRetrieve = (req, res = response) => {
+const localImageRetrieve = (req, res = response) => {
+
+    const type = req.params.type;
+    const image = req.params.image;
+
+    const pathLocalImage = path.join(__dirname, `../uploads/${type}/${image}`);
+
+    if (fs.existsSync(pathLocalImage)) {
+        res.sendFile(pathLocalImage);
+    } else {
+        const pathLocalNotImage = path.join(__dirname, `../uploads/Image_not_available.jpg`);
+        res.sendFile(pathLocalNotImage);
+    }
+
+}
+
+const cloudImageRetrieve = (req, res = response) => {
+
+    const type = req.params.type;
+    const image = req.params.image;
+
+    const pathCloudImage = `springshop/uploads/${type}/${image}`;
+
+    if (image !== 'not-found') {
+        const cloudImage = cloudinary.image(pathCloudImage, { width: 500, height: 500, crop: "fill", cloud_name: "reslab-files", format: image, secure: "true" });
+        res.send(cloudImage);
+    } else {
+        const cloudNotFoundImage = cloudinary.image('Image_not_available_ybdaaj.jpg', { width: 500, height: 500, crop: "fill", cloud_name: "reslab-files", secure: "true" });
+        res.json({
+            ok: false,
+            cloudNotFoundImage
+        });
+    }
 
 }
 
 
+
+
 module.exports = {
     fileUpload,
-    imageRetrieve
+    localImageRetrieve,
+    cloudImageRetrieve
 }

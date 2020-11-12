@@ -5,9 +5,47 @@ const fs = require('fs');
 
 const imageDelete = (path) => {
 
+    if (fs.existsSync(path)) {
+        fs.unlinkSync(path)
+    }
+
 }
 
-const imageUpdate = (type, id, fileName) => {
+const imageUpdate = async(type, id, fileName) => {
+
+    let oldPath = ''
+
+    switch (type) {
+        case 'users':
+            const user = await User.findById(id);
+            if (!user) {
+                console.log('No existe imagen de usuario');
+                return false;
+            }
+            oldPath = `./uploads/${type}/${user.img}`;
+            imageDelete(oldPath);
+            user.img = fileName;
+            await user.save();
+            return true;
+
+            break;
+
+        case 'products':
+            const product = await Product.findById(id);
+            if (!product) {
+                console.log('No existe imagen de producto');
+                return false;
+            }
+            oldPath = `./uploads/${type}/${product.img}`;
+            imageDelete(oldPath);
+            product.img = fileName;
+            await product.save();
+            return true;
+
+            break;
+        default:
+            break;
+    }
 
 }
 
