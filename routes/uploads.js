@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { localImageRetrieve, fileUpload, cloudImageRetrieve } = require('../controllers/uploads');
+const { localImageRetrieve, fileUpload } = require('../controllers/uploads');
 const { JWTValidate } = require('../middlewares/jwt-validate');
 const ExpressFileUpload = require('express-fileupload');
 

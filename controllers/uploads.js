@@ -1,15 +1,15 @@
 const { response } = require('express');
 const { v4: uuidv4 } = require('uuid');
-const cloudinary = require('cloudinary').v2;
+//const cloudinary = require('cloudinary').v2;
 const { imageUpdate } = require('../helpers/image-update');
 const fs = require('fs');
 const path = require('path');
 
-cloudinary.config({
+/* cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_KEY,
     api_secret: process.env.CLOUDINARY_SECRET
-});
+}); */
 
 const fileUpload = (req, res = response) => {
 
@@ -48,7 +48,7 @@ const fileUpload = (req, res = response) => {
 
     const path = `./uploads/${type}/${fileName}`;
 
-    const cloudinary_path = `springshop/uploads/${type}`;
+    //const cloudinary_path = `springshop/uploads/${type}`;
 
     file.mv(path, (err) => {
 
@@ -100,7 +100,7 @@ const localImageRetrieve = (req, res = response) => {
 
 }
 
-const cloudImageRetrieve = (req, res = response) => {
+/* const cloudImageRetrieve = (req, res = response) => {
 
     const type = req.params.type;
     const image = req.params.image;
@@ -118,7 +118,7 @@ const cloudImageRetrieve = (req, res = response) => {
         });
     }
 
-}
+} */
 
 
 
@@ -126,5 +126,5 @@ const cloudImageRetrieve = (req, res = response) => {
 module.exports = {
     fileUpload,
     localImageRetrieve,
-    cloudImageRetrieve
+    //cloudImageRetrieve
 }
