@@ -9,7 +9,7 @@ const path = require('path');
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_KEY,
     api_secret: process.env.CLOUDINARY_SECRET
-}); */
+});*/
 
 const fileUpload = (req, res = response) => {
 
