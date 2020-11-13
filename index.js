@@ -23,6 +23,7 @@ app.use('/api/categories', require('./routes/categories'));
 app.use('/api/login', require('./routes/auth'));
 app.use('/api/checkouts', require('./routes/checkouts'));
 app.use('/api/uploads', require('./routes/uploads'));
+app.use('/api/searchs', require('./routes/searchs'));
 
 
 app.listen(process.env.PORT, () => {
