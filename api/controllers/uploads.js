@@ -46,11 +46,11 @@ const fileUpload = (req, res = response) => {
 
     const fileName = `${uuidv4()}.${fileExt}`;
 
-    const path = `./uploads/${type}/${fileName}`;
+    const pathFile = path.resolve(__dirname, `../uploads/${type}/${fileName}`);
 
     //const cloudinary_path = `springshop/uploads/${type}`;
 
-    file.mv(path, (err) => {
+    file.mv(pathFile, (err) => {
 
         if (err) {
             console.log(err);
@@ -89,12 +89,12 @@ const localImageRetrieve = (req, res = response) => {
     const type = req.params.type;
     const image = req.params.image;
 
-    const pathLocalImage = path.join(__dirname, `../uploads/${type}/${image}`);
+    const pathLocalImage = path.resolve(__dirname, `../uploads/${type}/${image}`);
 
     if (fs.existsSync(pathLocalImage)) {
         res.sendFile(pathLocalImage);
     } else {
-        const pathLocalNotImage = path.join(__dirname, `../uploads/Image_not_available.jpg`);
+        const pathLocalNotImage = path.resolve(__dirname, `../uploads/Image_not_available.jpg`);
         res.sendFile(pathLocalNotImage);
     }
 

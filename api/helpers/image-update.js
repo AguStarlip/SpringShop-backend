@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const Product = require('../models/product');
 const fs = require('fs');
+const path = require('path');
 
 
 const imageDelete = (path) => {
@@ -22,7 +23,7 @@ const imageUpdate = async(type, id, fileName) => {
                 console.log('No existe imagen de usuario');
                 return false;
             }
-            oldPath = `./uploads/${type}/${user.img}`;
+            oldPath = path.resolve(__dirname, `./uploads/${type}/${user.img}`);
             imageDelete(oldPath);
             user.img = fileName;
             await user.save();
@@ -36,7 +37,7 @@ const imageUpdate = async(type, id, fileName) => {
                 console.log('No existe imagen de producto');
                 return false;
             }
-            oldPath = `./uploads/${type}/${product.img}`;
+            oldPath = path.resolve(__dirname, `./uploads/${type}/${product.img}`);
             imageDelete(oldPath);
             product.img = fileName;
             await product.save();
@@ -51,6 +52,5 @@ const imageUpdate = async(type, id, fileName) => {
 
 
 module.exports = {
-    imageDelete,
     imageUpdate
 }
