@@ -94,7 +94,7 @@ const localImageRetrieve = (req, res = response) => {
     if (fs.existsSync(pathLocalImage)) {
         res.sendFile(pathLocalImage);
     } else {
-        const pathLocalNotImage = path.resolve(__dirname, `../uploads/Image_not_available.jpg`);
+        const pathLocalNotImage = path.resolve(__dirname, `../uploads/Image-not-available.jpg`);
         res.sendFile(pathLocalNotImage);
     }
 

@@ -9,8 +9,8 @@ const searchAll = async(req, res = response) => {
     const regex = new RegExp(term, 'i')
 
     const [user, product] = await Promise.all([
-        await User.find({ name: regex }),
-        await Product.find({ name: regex })
+        await User.find({ name: regex, email: regex, role: regex, status: regex }),
+        await Product.find({ name: regex, brand: regex, stock: regex , unitPrice: regex })
     ]);
 
     res.json({
@@ -31,12 +31,12 @@ const searchByCollection = async(req, res = response) => {
 
     switch (table) {
         case 'users':
-            data = await User.find({ name: regex });
+            data = await User.find({ name: regex, email: regex, role: regex });
 
             break;
         case 'products':
-            data = await Product.find({ name: regex })
-                .populate('user', 'name img');
+            data = await Product.find({ name: regex, brand: regex })
+                .populate('user', 'name email img');
 
             break;
 
